@@ -8,6 +8,13 @@ const gameBoard = (() => {
     return {board};
 })();
 
+const flowController = (() => {
+    const xPlayer = createPlayer('Jim');
+    const oPlayer = createPlayer('Bob');
+
+    return {xPlayer, oPlayer};
+})();
+
 const createPlayer = (name) => {
     let isTurn = false;
 
