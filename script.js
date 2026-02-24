@@ -5,32 +5,30 @@ const gameBoard = (() => {
         ['', '', '']
     ];
 
-    return {board};
+    const getBoardState = () => board;
+
+    const changeBoardState = (mark, coords) => {
+        board[coords[0]][coords[1]] = mark;
+    }
+
+    return {getBoardState, changeBoardState};
 })();
 
+const createPlayer = (name, mark) => {
+    const getMark = () => mark;
+
+    return {name, getMark};
+};
+
 const flowController = (() => {
-    const xPlayer = createPlayer('Jim');
-    const oPlayer = createPlayer('Bob');
+    const xPlayer = createPlayer('Jim', 'X');
+    const oPlayer = createPlayer('Bob', 'O');
 
     return {xPlayer, oPlayer};
 })();
 
-const createPlayer = (name) => {
-    let isTurn = false;
+console.log(gameBoard.getBoardState());
 
-    const report = () => isTurn;
+gameBoard.changeBoardState('X', [0, 0]);
 
-    const toggleTurn = () => {
-        isTurn = !isTurn;
-    };
-
-    return {name, report, toggleTurn};
-};
-
-const jim = createPlayer('jim');
-
-console.log(jim.report());
-jim.toggleTurn();
-console.log(jim.report());
-jim.toggleTurn();
-console.log(jim.report());
+console.log(gameBoard.getBoardState());
