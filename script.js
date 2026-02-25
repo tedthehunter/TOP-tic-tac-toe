@@ -27,8 +27,8 @@ const flowController = (() => {
     return {xPlayer, oPlayer};
 })();
 
-console.log(gameBoard.getBoardState());
+console.log(JSON.stringify(gameBoard.getBoardState()));
 
 gameBoard.changeBoardState('X', [0, 0]);
 
-console.log(gameBoard.getBoardState());
+console.log(JSON.stringify(gameBoard.getBoardState()));
