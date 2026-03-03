@@ -5,30 +5,47 @@ const gameBoard = (() => {
         ['', '', '']
     ];
 
-    const getBoardState = () => board;
+    function getBoardState() {
+        return board;
+    };
 
-    const changeBoardState = (mark, coords) => {
+    function changeBoardState(mark, coords) {
         board[coords[0]][coords[1]] = mark;
-    }
+    };
 
     return {getBoardState, changeBoardState};
 })();
 
 const createPlayer = (name, mark) => {
-    const getMark = () => mark;
+    function getMark() {
+        return mark;
+    };
 
-    return {name, getMark};
+    function getName() {
+        return name;
+    };
+
+    return {getMark, getName};
 };
 
 const flowController = (() => {
     const xPlayer = createPlayer('Jim', 'X');
     const oPlayer = createPlayer('Bob', 'O');
 
-    return {xPlayer, oPlayer};
+    let isPlayerXTurn = true;
+
+    function togglePlayerTurn() {
+        isPlayerXTurn = !isPlayerXTurn;
+    };
+
+    function getPlayerXTurn() {
+        return isPlayerXTurn;
+    };
+
+    function playRound() {
+        //prompt(`${xPlayer.name}: choose where to put your ${xPlayer.getMark()}`);
+    };
+
+    return {togglePlayerTurn, getPlayerXTurn, playRound};
 })();
 
-console.log(JSON.stringify(gameBoard.getBoardState()));
-
-gameBoard.changeBoardState('X', [0, 0]);
-
-console.log(JSON.stringify(gameBoard.getBoardState()));
