@@ -13,6 +13,10 @@ const gameBoard = (() => {
         board[coords[0]][coords[1]] = mark;
     };
 
+    function checkWin(mark) {
+        return ;
+    };
+
     return {getBoardState, changeBoardState};
 })();
 
@@ -42,10 +46,17 @@ const flowController = (() => {
         return isPlayerXTurn;
     };
 
-    function playRound() {
-        //prompt(`${xPlayer.name}: choose where to put your ${xPlayer.getMark()}`);
+    function playRound(coords) {
+        isPlayerXTurn ? gameBoard.changeBoardState('X', coords) : gameBoard.changeBoardState('Y', coords);
+        togglePlayerTurn();
+        return JSON.stringify(gameBoard.getBoardState());
     };
 
     return {togglePlayerTurn, getPlayerXTurn, playRound};
 })();
 
+console.log(flowController.playRound([0,0]));
+console.log(flowController.playRound([0,2]));
+console.log(flowController.playRound([1,0]));
+console.log(flowController.playRound([1,2]));
+console.log(flowController.playRound([2,0]));
