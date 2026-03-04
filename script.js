@@ -7,17 +7,38 @@ const gameBoard = (() => {
 
     function getBoardState() {
         return board;
-    };
+    }
 
     function changeBoardState(mark, coords) {
         board[coords[0]][coords[1]] = mark;
-    };
+    }
 
     function checkWin(mark) {
-        return ;
-    };
+        const possibleWinPositions = [
+            board[0],
+            board[1],
+            board[2],
+            [board[0][0], board[1][0], board[2][0]],
+            [board[0][1], board[1][1], board[2][1]],
+            [board[0][2], board[1][2], board[2][2]],
+            [board[0][0], board[1][1], board[2][2]],
+            [board[2][0], board[1][1], board[0][2]]
+        ];
 
-    return {getBoardState, changeBoardState};
+        function checkThree(mark, array) {
+            return array.every(element => element === mark);
+        }
+
+        for (let i = 0; i < possibleWinPositions.length; i++) {
+            if (checkThree(mark, possibleWinPositions[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    return {getBoardState, changeBoardState, checkWin};
 })();
 
 const createPlayer = (name, mark) => {
@@ -47,7 +68,14 @@ const flowController = (() => {
     };
 
     function playRound(coords) {
-        isPlayerXTurn ? gameBoard.changeBoardState('X', coords) : gameBoard.changeBoardState('Y', coords);
+        if (isPlayerXTurn) {
+            gameBoard.changeBoardState('X', coords);
+            gameBoard.checkWin('X');
+        } else {
+            gameBoard.changeBoardState('O', coords);
+            gameBoard.checkWin('O');
+        }
+
         togglePlayerTurn();
         return JSON.stringify(gameBoard.getBoardState());
     };
@@ -60,3 +88,4 @@ console.log(flowController.playRound([0,2]));
 console.log(flowController.playRound([1,0]));
 console.log(flowController.playRound([1,2]));
 console.log(flowController.playRound([2,0]));
+console.log(gameBoard.checkWin(''));
