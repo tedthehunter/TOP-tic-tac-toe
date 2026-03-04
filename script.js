@@ -29,10 +29,18 @@ const gameBoard = (() => {
             return array.every(element => element === mark);
         }
 
+        function checkTie(possibleWinPositions) {
+            return possibleWinPositions.every(subArray => (subArray.includes('X') && subArray.includes('O')));
+        }
+
         for (let i = 0; i < possibleWinPositions.length; i++) {
             if (checkThree(mark, possibleWinPositions[i])) {
                 return true;
             }
+        }
+
+        if (checkTie(possibleWinPositions)) {
+            return 'TIE';
         }
 
         return false;
@@ -91,13 +99,12 @@ const flowController = (() => {
     return {togglePlayerTurn, getPlayerXTurn, playRound};
 })();
 
+console.log(flowController.playRound([1,1]));
 console.log(flowController.playRound([0,0]));
 console.log(flowController.playRound([0,2]));
-console.log(flowController.playRound([1,1]));
+console.log(flowController.playRound([2,0]));
+console.log(flowController.playRound([1,0]));
 console.log(flowController.playRound([1,2]));
-console.log(flowController.playRound([2,2]));
+console.log(flowController.playRound([2,1]));
+console.log(flowController.playRound([0,1]));
 console.log(gameBoard.checkWin('X'));
-gameBoard.reset();
-console.log(gameBoard.checkWin('X'));
-console.log(gameBoard.checkWin(''));
-console.log(JSON.stringify(gameBoard.getBoardState()));
