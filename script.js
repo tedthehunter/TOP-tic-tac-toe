@@ -38,7 +38,15 @@ const gameBoard = (() => {
         return false;
     }
 
-    return {getBoardState, changeBoardState, checkWin};
+    function reset() {
+        board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ]; 
+    }
+
+    return {getBoardState, changeBoardState, checkWin, reset};
 })();
 
 const createPlayer = (name, mark) => {
@@ -85,7 +93,11 @@ const flowController = (() => {
 
 console.log(flowController.playRound([0,0]));
 console.log(flowController.playRound([0,2]));
-console.log(flowController.playRound([1,0]));
+console.log(flowController.playRound([1,1]));
 console.log(flowController.playRound([1,2]));
-console.log(flowController.playRound([2,0]));
+console.log(flowController.playRound([2,2]));
+console.log(gameBoard.checkWin('X'));
+gameBoard.reset();
+console.log(gameBoard.checkWin('X'));
 console.log(gameBoard.checkWin(''));
+console.log(JSON.stringify(gameBoard.getBoardState()));
