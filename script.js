@@ -93,10 +93,28 @@ const flowController = (() => {
         }
 
         togglePlayerTurn();
-        return JSON.stringify(gameBoard.getBoardState());
+
+        displayController.updateBoard();
     };
 
     return {togglePlayerTurn, getPlayerXTurn, playRound};
+})();
+
+const displayController = (() => {
+    function updateBoard() {
+        const boardDiv = document.querySelector('.board-area');
+        boardDiv.innerHTML = '';
+        gameBoard.getBoardState().forEach((subArray) => {
+            subArray.forEach((square) => {
+                let newDiv = document.createElement('div');
+                newDiv.innerHTML = square;
+                newDiv.className = 'board-square';
+                boardDiv.appendChild(newDiv);
+            })
+        })
+    }
+
+    return {updateBoard};
 })();
 
 console.log(flowController.playRound([1,1]));
@@ -108,3 +126,5 @@ console.log(flowController.playRound([1,2]));
 console.log(flowController.playRound([2,1]));
 console.log(flowController.playRound([0,1]));
 console.log(gameBoard.checkWin('X'));
+
+displayController.updateBoard()
