@@ -6,7 +6,7 @@
     margin: auto;
     background-color: beige;
     display: grid;
-    grid: 3, 1fr / repeat(3, 1fr);
+    grid: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
 .row-div {

@@ -35,7 +35,7 @@ const gameBoard = (() => {
 
         for (let i = 0; i < possibleWinPositions.length; i++) {
             if (checkThree(mark, possibleWinPositions[i])) {
-                return true;
+                return `${mark} Player wins!`;
             }
         }
 
@@ -43,7 +43,7 @@ const gameBoard = (() => {
             return 'TIE';
         }
 
-        return false;
+        return ;
     }
 
     function reset() {
@@ -86,10 +86,10 @@ const flowController = (() => {
     function playRound(coords) {
         if (isPlayerXTurn) {
             gameBoard.changeBoardState('X', coords);
-            gameBoard.checkWin('X');
+            console.log(gameBoard.checkWin('X'));
         } else {
             gameBoard.changeBoardState('O', coords);
-            gameBoard.checkWin('O');
+            console.log(gameBoard.checkWin('O'));
         }
 
         togglePlayerTurn();
@@ -101,28 +101,39 @@ const flowController = (() => {
 })();
 
 const displayController = (() => {
+    const boardDOMElements = [
+        [document.querySelector('#cell-0-0'), document.querySelector('#cell-0-1'), document.querySelector('#cell-0-2')],
+        [document.querySelector('#cell-1-0'), document.querySelector('#cell-1-1'), document.querySelector('#cell-1-2')],
+        [document.querySelector('#cell-2-0'), document.querySelector('#cell-2-1'), document.querySelector('#cell-2-2')]
+    ];
+    
+    //adds an eventlistener to each square of the gameboard - CALL ONCE AT SETUP
+    function initializeListeners() {
+        for (let i = 0; i < boardDOMElements.length; i++) {
+            for (let j = 0; j < boardDOMElements[i].length; j++) {
+                // callback function calls playRound on the element of the 2D 'board' array that matches the clicked square's 2D index
+                boardDOMElements[i][j].addEventListener('click', (event) => {
+                    const parsedIDAsIndex = event.target.id.split('-');
+                    console.log(parsedIDAsIndex);
+                    flowController.playRound([parsedIDAsIndex[1], parsedIDAsIndex[2]]);
+                });
+            }
+        }
+    }
+
+    //updates the content of each board square to match the 2D 'board' array
     function updateBoard() {
-        const boardDiv = document.querySelector('.board-area');
-        boardDiv.innerHTML = '';
-        gameBoard.getBoardState().forEach((subArray) => {
-            let rowDiv = document.createElement('div');
-            rowDiv.className = 'row-div';
-            subArray.forEach((square) => {
-                let newDiv = document.createElement('div');
-                newDiv.innerHTML = square;
-                newDiv.className = 'board-square';
-                rowDiv.appendChild(newDiv);
-            })
-            boardDiv.appendChild(rowDiv);
-        })
+        const boardData = gameBoard.getBoardState();
+
+        for (let i = 0; i < boardData.length; i++) {
+            for (let j = 0; j < boardData[i].length; j++) {
+                boardDOMElements[i][j].innerHTML = boardData[i][j];
+            }
+        }
     }
 
-    function makeMark(mark) {
-        this.innerHTML = mark;
-        console.log('clicked!');
-    }
-
-    return {updateBoard, makeMark};
+    return {updateBoard, initializeListeners};
 })();
 
-displayController.updateBoard()
+displayController.initializeListeners();
+displayController.updateBoard();
