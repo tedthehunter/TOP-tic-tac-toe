@@ -105,26 +105,24 @@ const displayController = (() => {
         const boardDiv = document.querySelector('.board-area');
         boardDiv.innerHTML = '';
         gameBoard.getBoardState().forEach((subArray) => {
+            let rowDiv = document.createElement('div');
+            rowDiv.className = 'row-div';
             subArray.forEach((square) => {
                 let newDiv = document.createElement('div');
                 newDiv.innerHTML = square;
                 newDiv.className = 'board-square';
-                boardDiv.appendChild(newDiv);
+                rowDiv.appendChild(newDiv);
             })
+            boardDiv.appendChild(rowDiv);
         })
     }
 
-    return {updateBoard};
-})();
+    function makeMark(mark) {
+        this.innerHTML = mark;
+        console.log('clicked!');
+    }
 
-console.log(flowController.playRound([1,1]));
-console.log(flowController.playRound([0,0]));
-console.log(flowController.playRound([0,2]));
-console.log(flowController.playRound([2,0]));
-console.log(flowController.playRound([1,0]));
-console.log(flowController.playRound([1,2]));
-console.log(flowController.playRound([2,1]));
-console.log(flowController.playRound([0,1]));
-console.log(gameBoard.checkWin('X'));
+    return {updateBoard, makeMark};
+})();
 
 displayController.updateBoard()

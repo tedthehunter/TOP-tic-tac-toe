@@ -6,7 +6,11 @@
     margin: auto;
     background-color: beige;
     display: grid;
-    grid: repeat(3, 1fr) / repeat(3, 1fr);
+    grid: 3, 1fr / repeat(3, 1fr);
+}
+
+.row-div {
+    display: flex;
 }
 
 .board-square {
