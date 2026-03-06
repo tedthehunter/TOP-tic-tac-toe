@@ -133,5 +133,4 @@ const displayController = (() => {
     return {updateBoard, initializeListeners};
 })();
 
-displayController.initializeListeners();
-displayController.updateBoard();
+document.querySelector('#game-start').addEventListener('click', displayController.initializeListeners);
