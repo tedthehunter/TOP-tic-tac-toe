@@ -104,17 +104,27 @@ const displayController = (() => {
         [document.querySelector('#cell-2-0'), document.querySelector('#cell-2-1'), document.querySelector('#cell-2-2')]
     ];
     
+    function playOnSquare(event) {
+        const parsedIDAsIndex = event.target.id.split('-');
+        flowController.playRound([parsedIDAsIndex[1], parsedIDAsIndex[2]]);
+    }
+
     //adds an eventlistener to each square of the gameboard - CALL ONCE AT SETUP
     function initializeListeners() {
         for (let i = 0; i < boardDOMElements.length; i++) {
             for (let j = 0; j < boardDOMElements[i].length; j++) {
                 // callback function calls playRound on the element of the 2D 'board' array that matches the clicked square's 2D index
-                boardDOMElements[i][j].addEventListener('click', (event) => {
-                    if (event.target.innerHTML === '') {
-                        const parsedIDAsIndex = event.target.id.split('-');
-                        flowController.playRound([parsedIDAsIndex[1], parsedIDAsIndex[2]]);
-                    }
-                });
+                boardDOMElements[i][j].addEventListener('click', playOnSquare, {once: true});
+            }
+        }
+    }
+
+    //clicks each eventlistener to remove them, useful for resetting board state
+    function removeListeners() {
+        for (let i = 0; i < boardDOMElements.length; i++) {
+            for (let j = 0; j < boardDOMElements[i].length; j++) {
+                // callback function calls playRound on the element of the 2D 'board' array that matches the clicked square's 2D index
+                boardDOMElements[i][j].removeEventListener('click', playOnSquare);
             }
         }
     }
@@ -130,7 +140,24 @@ const displayController = (() => {
         }
     }
 
-    return {updateBoard, initializeListeners};
+    return {updateBoard, initializeListeners, removeListeners};
 })();
 
-document.querySelector('#game-start').addEventListener('click', displayController.initializeListeners);
+//initialize start game button
+document.querySelector('#game-start').addEventListener('click', (event) => {
+    // start the game
+    if (event.target.innerHTML === 'Start Game') {
+        displayController.initializeListeners();
+        event.target.innerHTML = 'Reset';
+    }
+    // reset the game - set player X to first turn, clear the board, remove eventlisteners
+    else {
+        if (!flowController.getPlayerXTurn()) {
+            flowController.togglePlayerTurn();
+        }
+        displayController.removeListeners();
+        gameBoard.reset();
+        displayController.updateBoard();
+        event.target.innerHTML = 'Start Game';
+    }
+});
