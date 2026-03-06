@@ -70,9 +70,6 @@ const createPlayer = (name, mark) => {
 };
 
 const flowController = (() => {
-    const xPlayer = createPlayer('Jim', 'X');
-    const oPlayer = createPlayer('Bob', 'O');
-
     let isPlayerXTurn = true;
 
     function togglePlayerTurn() {
@@ -113,9 +110,10 @@ const displayController = (() => {
             for (let j = 0; j < boardDOMElements[i].length; j++) {
                 // callback function calls playRound on the element of the 2D 'board' array that matches the clicked square's 2D index
                 boardDOMElements[i][j].addEventListener('click', (event) => {
-                    const parsedIDAsIndex = event.target.id.split('-');
-                    console.log(parsedIDAsIndex);
-                    flowController.playRound([parsedIDAsIndex[1], parsedIDAsIndex[2]]);
+                    if (event.target.innerHTML === '') {
+                        const parsedIDAsIndex = event.target.id.split('-');
+                        flowController.playRound([parsedIDAsIndex[1], parsedIDAsIndex[2]]);
+                    }
                 });
             }
         }
