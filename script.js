@@ -35,11 +35,13 @@ const gameBoard = (() => {
 
         for (let i = 0; i < possibleWinPositions.length; i++) {
             if (checkThree(mark, possibleWinPositions[i])) {
+                displayController.removeListeners();
                 return `${mark} Player wins!`;
             }
         }
 
         if (checkTie(possibleWinPositions)) {
+            displayController.removeListeners();
             return 'TIE';
         }
 
