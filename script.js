@@ -1,3 +1,6 @@
+let xPlayer;
+let oPlayer;
+
 const gameBoard = (() => {
     let board = [
         ['', '', ''],
@@ -36,7 +39,7 @@ const gameBoard = (() => {
         for (let i = 0; i < possibleWinPositions.length; i++) {
             if (checkThree(mark, possibleWinPositions[i])) {
                 displayController.removeListeners();
-                return `${mark} Player wins!`;
+                return `${xPlayer.name} wins!`; // WRONG - PLAYER X ALWAYS WINS
             }
         }
 
@@ -151,6 +154,8 @@ document.querySelector('#game-start').addEventListener('click', (event) => {
     if (event.target.innerHTML === 'Start Game') {
         displayController.initializeListeners();
         event.target.innerHTML = 'Reset';
+        xPlayer = createPlayer(document.querySelector('#playerXName').innerHTML, 'X');
+        oPlayer = createPlayer(document.querySelector('#playerOName').innerHTML, 'O');
     }
     // reset the game - set player X to first turn, clear the board, remove eventlisteners
     else {
@@ -163,3 +168,4 @@ document.querySelector('#game-start').addEventListener('click', (event) => {
         event.target.innerHTML = 'Start Game';
     }
 });
+
