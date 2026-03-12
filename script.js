@@ -81,12 +81,29 @@ const flowController = (() => {
         oPlayer = createPlayer(document.querySelector('#playerOName').value, 'O');
     }
 
+    function initializeStartButton() {
+        document.querySelector('#game-start').addEventListener('click', (event) => {
+            // start the game
+            if (event.target.innerHTML === 'Start Game') {
+                displayController.initializeListeners();
+                event.target.innerHTML = 'Reset';
+                initializePlayers();
+            }
+            // reset the game - set player X to first turn, clear the board, remove eventlisteners
+            else {
+                if (!isPlayerXTurn) {
+                    togglePlayerTurn();
+                }
+                displayController.removeListeners();
+                gameBoard.reset();
+                displayController.updateBoard();
+                event.target.innerHTML = 'Start Game';
+            }
+        });
+    }
+
     function togglePlayerTurn() {
         isPlayerXTurn = !isPlayerXTurn;
-    };
-
-    function getPlayerXTurn() {
-        return isPlayerXTurn;
     };
 
     function getPlayers() {
@@ -117,7 +134,7 @@ const flowController = (() => {
         displayController.updateBoard();
     };
 
-    return {togglePlayerTurn, getPlayerXTurn, playRound, initializePlayers, getPlayers};
+    return {initializeStartButton, playRound, initializePlayers, getPlayers};
 })();
 
 const displayController = (() => {
@@ -166,22 +183,4 @@ const displayController = (() => {
     return {updateBoard, initializeListeners, removeListeners};
 })();
 
-//initialize start game button
-document.querySelector('#game-start').addEventListener('click', (event) => {
-    // start the game
-    if (event.target.innerHTML === 'Start Game') {
-        displayController.initializeListeners();
-        event.target.innerHTML = 'Reset';
-        flowController.initializePlayers();
-    }
-    // reset the game - set player X to first turn, clear the board, remove eventlisteners
-    else {
-        if (!flowController.getPlayerXTurn()) {
-            flowController.togglePlayerTurn();
-        }
-        displayController.removeListeners();
-        gameBoard.reset();
-        displayController.updateBoard();
-        event.target.innerHTML = 'Start Game';
-    }
-});
+flowController.initializeStartButton();
