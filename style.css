@@ -19,6 +19,7 @@
 
 #player-names {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
