@@ -93,32 +93,24 @@ const flowController = (() => {
         return [xPlayer, oPlayer]
     }
 
-    function playRound(coords) {
-        if (isPlayerXTurn) {
-            gameBoard.changeBoardState('X', coords);
-            switch (gameBoard.checkWin('X')) {
+    function playTurn(player, coords) {
+        gameBoard.changeBoardState(player.getMark(), coords);
+            switch (gameBoard.checkWin(player.getMark())) {
                 case true:
-                    console.log(`${xPlayer.getName()} wins!`);
+                    console.log(`${player.getName()} wins!`);
                     break;
                 case 'TIE':
                     console.log('Tie game!');
-                    break;
-                case false:
                     break;
             };
+    }
+
+    function playRound(coords) {
+        if (isPlayerXTurn) {
+            playTurn(xPlayer, coords);
         } else {
-            gameBoard.changeBoardState('O', coords);
-            switch (gameBoard.checkWin('O')) {
-                case true:
-                    console.log(`${oPlayer.getName()} wins!`);
-                    break;
-                case 'TIE':
-                    console.log('Tie game!');
-                    break;
-                case false:
-                    break;
+            playTurn(oPlayer, coords);
         };
-        }
 
         togglePlayerTurn();
 
