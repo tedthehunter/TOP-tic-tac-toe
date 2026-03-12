@@ -9,6 +9,19 @@
     grid: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
+#input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+    gap: 1rem;
+}
+
+#player-names {
+    display: flex;
+    gap: 1rem;
+}
+
 .row-div {
     display: flex;
 }
