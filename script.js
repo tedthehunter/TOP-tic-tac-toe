@@ -1,6 +1,3 @@
-let xPlayer;
-let oPlayer;
-
 const gameBoard = (() => {
     let board = [
         ['', '', ''],
@@ -39,7 +36,7 @@ const gameBoard = (() => {
         for (let i = 0; i < possibleWinPositions.length; i++) {
             if (checkThree(mark, possibleWinPositions[i])) {
                 displayController.removeListeners();
-                return `${xPlayer.name} wins!`; // WRONG - PLAYER X ALWAYS WINS
+                return true
             }
         }
 
@@ -48,7 +45,7 @@ const gameBoard = (() => {
             return 'TIE';
         }
 
-        return ;
+        return false;
     }
 
     function reset() {
@@ -76,6 +73,13 @@ const createPlayer = (name, mark) => {
 
 const flowController = (() => {
     let isPlayerXTurn = true;
+    let xPlayer;
+    let oPlayer;
+
+    function initializePlayers() {
+        xPlayer = createPlayer(document.querySelector('#playerXName').value, 'X');
+        oPlayer = createPlayer(document.querySelector('#playerOName').value, 'O');
+    }
 
     function togglePlayerTurn() {
         isPlayerXTurn = !isPlayerXTurn;
@@ -85,13 +89,35 @@ const flowController = (() => {
         return isPlayerXTurn;
     };
 
+    function getPlayers() {
+        return [xPlayer, oPlayer]
+    }
+
     function playRound(coords) {
         if (isPlayerXTurn) {
             gameBoard.changeBoardState('X', coords);
-            console.log(gameBoard.checkWin('X'));
+            switch (gameBoard.checkWin('X')) {
+                case true:
+                    console.log(`${xPlayer.getName()} wins!`);
+                    break;
+                case 'TIE':
+                    console.log('Tie game!');
+                    break;
+                case false:
+                    break;
+            };
         } else {
             gameBoard.changeBoardState('O', coords);
-            console.log(gameBoard.checkWin('O'));
+            switch (gameBoard.checkWin('O')) {
+                case true:
+                    console.log(`${oPlayer.getName()} wins!`);
+                    break;
+                case 'TIE':
+                    console.log('Tie game!');
+                    break;
+                case false:
+                    break;
+        };
         }
 
         togglePlayerTurn();
@@ -99,7 +125,7 @@ const flowController = (() => {
         displayController.updateBoard();
     };
 
-    return {togglePlayerTurn, getPlayerXTurn, playRound};
+    return {togglePlayerTurn, getPlayerXTurn, playRound, initializePlayers, getPlayers};
 })();
 
 const displayController = (() => {
@@ -154,8 +180,7 @@ document.querySelector('#game-start').addEventListener('click', (event) => {
     if (event.target.innerHTML === 'Start Game') {
         displayController.initializeListeners();
         event.target.innerHTML = 'Reset';
-        xPlayer = createPlayer(document.querySelector('#playerXName').innerHTML, 'X');
-        oPlayer = createPlayer(document.querySelector('#playerOName').innerHTML, 'O');
+        flowController.initializePlayers();
     }
     // reset the game - set player X to first turn, clear the board, remove eventlisteners
     else {
@@ -168,4 +193,3 @@ document.querySelector('#game-start').addEventListener('click', (event) => {
         event.target.innerHTML = 'Start Game';
     }
 });
-
