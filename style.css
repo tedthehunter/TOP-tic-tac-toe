@@ -1,3 +1,9 @@
+body {
+    font-family: 'Itim', 'Roboto', sans-serif;
+    font-size: 20px;
+    background-color: rgb(255, 252, 248);
+}
+
 .board-area {
     border: 2px black solid;
     width: min-content;
@@ -37,5 +43,4 @@
     display: flex;
     justify-content: center;
     margin: 2rem;
-    gap: 1rem;
 }
