@@ -107,10 +107,6 @@ const flowController = (() => {
         isPlayerXTurn = !isPlayerXTurn;
     };
 
-    function getPlayers() {
-        return [xPlayer, oPlayer]
-    }
-
     function playTurn(player, coords) {
         gameBoard.changeBoardState(player.getMark(), coords);
             switch (gameBoard.checkWin(player.getMark())) {
@@ -135,7 +131,7 @@ const flowController = (() => {
         displayController.updateBoard();
     };
 
-    return {initializeStartButton, playRound, initializePlayers, getPlayers};
+    return {initializeStartButton, playRound, initializePlayers};
 })();
 
 const displayController = (() => {
