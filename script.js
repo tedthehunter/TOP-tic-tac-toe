@@ -98,6 +98,7 @@ const flowController = (() => {
                 gameBoard.reset();
                 displayController.updateBoard();
                 event.target.innerHTML = 'Start Game';
+                document.querySelector('#game-status').innerHTML = '';
             }
         });
     }
@@ -114,10 +115,10 @@ const flowController = (() => {
         gameBoard.changeBoardState(player.getMark(), coords);
             switch (gameBoard.checkWin(player.getMark())) {
                 case true:
-                    console.log(`${player.getName()} wins!`);
+                    document.querySelector('#game-status').innerHTML = `${player.getName()} wins!`;
                     break;
                 case 'TIE':
-                    console.log('Tie game!');
+                    document.querySelector('#game-status').innerHTML = 'Tie game!';
                     break;
             };
     }
